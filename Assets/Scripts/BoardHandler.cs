@@ -111,7 +111,7 @@ namespace PuzzleGame
                     Debug.Log("SELF INTERSECT>>"+IsLineSelfIntersect(currentDrawnColor,currentBlock));
                     bool isSelfIntersect = IsLineSelfIntersect(currentDrawnColor, currentBlock);//Check if line intersect with self i.e traces back on same path
                     
-                    if(currentBlock.isLineDrawn&&!isSelfIntersect)
+                    if(currentBlock.isLineDrawn&&!isSelfIntersect&&checkIfAdjacentBlock(lastBlock,currentBlock))
                         TrimOverlappingLineData(currentBlock.ctype,currentBlock);//Trim if intersect with other color line in path
                     
                     if(!isSelfIntersect)
@@ -214,6 +214,50 @@ namespace PuzzleGame
 
         }
 
+        bool checkIfAdjacentBlock(Block lBlock,Block curBlock)
+        {
+            int diff = 0;
+            bool isAdjBlock = false;
+            if ((int)lBlock.matrixPos.x == (int)curBlock.matrixPos.x)
+            {
+                Debug.Log("Same row");
+                //same row
+                diff = (int)(lBlock.matrixPos.y - curBlock.matrixPos.y);
+                
+                
+                if (diff < -1 || diff > 1)
+                {
+                    isAdjBlock= false;
+                }
+                else
+                {
+                    isAdjBlock = true;
+                }
+                
+            }
+            else if((int)lBlock.matrixPos.y == (int)curBlock.matrixPos.y)
+            {
+                Debug.Log("Same column");
+                //same column
+                diff = (int)(curBlock.matrixPos.x - lBlock.matrixPos.x);
+
+               
+                if (diff < -1 || diff > 1)
+                {
+                    isAdjBlock= false;
+                }
+                else
+                {
+                    isAdjBlock = true;
+                }
+
+                
+            }
+
+            return isAdjBlock;
+
+        }
+
         void UpdateLineData(Block lBlock)
         {
             //Debug.Log("Update>>"+lineDataArr[(int)currentDrawnColor].Count);
@@ -267,7 +311,7 @@ namespace PuzzleGame
                 }
             }
 
-            for (int j = index+1; j < lineDataArr[(int)c].Count; j++)
+            for (int j = index; j < lineDataArr[(int)c].Count; j++)
             {
                 lineDataArr[(int)c][j].ClearPoint();
             }
