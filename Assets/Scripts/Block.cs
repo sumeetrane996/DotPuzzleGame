@@ -6,7 +6,6 @@ public class Block : MonoBehaviour
 {
     #region Variables
 
-    [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private LineRenderer lineRenderer;
     
     public ColorType ctype;
